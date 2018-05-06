@@ -1,5 +1,6 @@
 package main;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public class FunctionalInterfaceExamples {
@@ -25,5 +26,21 @@ public class FunctionalInterfaceExamples {
 		//final Function<Integer, Integer> identity = Function.identity();
 		final Function<Integer, Integer> identity = t -> t; //이것도 같다. T타입 받아서 T타입을 리턴한다.
 		System.out.println(identity.apply(999));
-	}
+		
+		///////Consumer///////
+		// 1.7
+//		final Consumer<String> print = new Consumer<String>() {
+//
+//			@Override
+//			public void accept(final String value) {
+//				System.out.println(value);
+//			}
+//		};
+		
+		// 1.8
+		final Consumer<String> print = value -> System.out.println(value);
+		final Function<String, Void> print2 = value -> System.out.println(value);
+		
+		print.accept("Hello");
+		}
 }
