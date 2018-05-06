@@ -3,9 +3,11 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class FunctionalInterfaceExamples {
 	public static void main(String[] args) {
@@ -64,9 +66,23 @@ public class FunctionalInterfaceExamples {
 		//System.out.println("positive numbers: " + positiveNumbers);
 		System.out.println("positive numbers: " + filter(positiveNumbers, isPositive));
 		
-		//너무 반복되니 아래와 같은 메소드를 선언할 수 있다.
+		/// Supplier ///
+		final Supplier<String> helloSupplier = () -> "Hello ";
+		System.out.println(helloSupplier.get() + "World");
+		
+//		printIfValidIndex(0, "Aaron");
+//		printIfValidIndex(1, "Aaron");
+//		printIfValidIndex(-1, "Aaron");
+		
+		long start = System.currentTimeMillis();
+		//printIfValidIndex(0, getVeryExpensiveValue()); 이 상태에서는 그냥 놔두면 Supplier 타입과 미스매치 발생
+		printIfValidIndex(0, () -> getVeryExpensiveValue());
+		printIfValidIndex(-2, () -> getVeryExpensiveValue());
+		printIfValidIndex(-1, () -> getVeryExpensiveValue()); // 이 경우 실제 필요한건 78번째 줄 처리만 유효하지만, 6초의 시간을 낭비하게 된다.
+		System.out.println("It took " + (System.currentTimeMillis() - start) / 1000 + "seconds");
+		
 		}
-	
+	//너무 반복되니 아래와 같은 메소드를 선언할 수 있다.
 	private static <T> List<T> filter(List<T> list, Predicate<T> filter) {
 		List<T> result = new ArrayList<>();
 		for (T input : list) {
@@ -75,5 +91,22 @@ public class FunctionalInterfaceExamples {
 		return result;
 	}
 	
+	//private static void printIfValidIndex(int number, String value) {
+	private static void printIfValidIndex(int number, Supplier<String> valueSupplier) {
+		if (number >= 0) {
+			System.out.println("The vakye is " + valueSupplier.get());
+		} else {
+			System.out.println("invalid");
+		}
+	}
 	
+	private static String getVeryExpensiveValue() {
+		// Let's just say it has very expensive calculation here!
+		try {
+			TimeUnit.SECONDS.sleep(3);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		return "Aaron";
+	}
 }
