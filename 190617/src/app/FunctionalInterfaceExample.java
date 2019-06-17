@@ -12,13 +12,8 @@ public class FunctionalInterfaceExample {
         // 람다 표현식의 타입이 함수형 인터페이스
         // identity function : 인풋과 같은 타입의 리턴(변형없이 그대로)
         
-        Function<String, Integer> toInt = new Function<String,Integer>() {
-            @Override
-            public Integer apply(final String value) {
-                return Integer.parseInt(value);
-            }
-        };
-
+        Function<String, Integer> toInt = value -> Integer.parseInt(value);
+        
         int number = toInt.apply("10");
         System.out.println(number);
     }
