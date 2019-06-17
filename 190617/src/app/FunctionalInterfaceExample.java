@@ -16,5 +16,10 @@ public class FunctionalInterfaceExample {
         
         int number = toInt.apply("10");
         System.out.println(number);
+
+        Function<Integer, Integer> identity = Function.identity();
+        Function<Integer, Integer> identity2 = t -> t;
+
+        System.out.println(identity2.apply(999));
     }
 }
