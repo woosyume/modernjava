@@ -12,9 +12,9 @@ public class SupplierExample {
         System.out.println(helloSupplier.get() + "World");
 
         long start = System.currentTimeMillis();
-        printIfValidIndex(0, getVeryExpensiveValue());
-        printIfValidIndex(-1, getVeryExpensiveValue());
-        printIfValidIndex(-2, getVeryExpensiveValue());
+        printIfValidIndex(0, () -> getVeryExpensiveValue());
+        printIfValidIndex(-1, () -> getVeryExpensiveValue());
+        printIfValidIndex(-2, () -> getVeryExpensiveValue());
         System.out.println("It took " + ((System.currentTimeMillis() - start) / 1000 + " seconds."));
     }
 
@@ -29,11 +29,11 @@ public class SupplierExample {
         return "Aaron";
     }
 
-    private static void printIfValidIndex(int number, String value) {
+    private static void printIfValidIndex(int number, Supplier<String> valueSupplier) {
         if (number >= 0) {
-            System.out.println("The value is " + value);
+            System.out.println("The value is " + valueSupplier.get());
         } else {
-            System.out.println("Invalid"); // 여기 들어오는 경우 value를 사용하지 않는다.
+            System.out.println("Invalid"); // 여기 들어오는 경우 value를 사용하지 않는다. 불필요한 자원낭비
         }
     }
 }
